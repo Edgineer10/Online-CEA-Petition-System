@@ -1,22 +1,22 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema({
   courseProg: {
     type: String,
     required: true,
   },
 
   currYear: {
-    type: int,
+    type: Number,
     required: true,
   },
 
   courseSem: {
-    type: int,
+    type: Number,
     required: true,
   },
 
-  courseNumber: {
+  courseCode: {
     type: String,
     required: true,
   },
@@ -25,13 +25,13 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   Units: {
-    type: int,
+    type: Number,
     required: true,
   },
   courseYear: {
-    type: int,
+    type: Number,
     required: true,
   },
 });
 
-module.exports = mongoose.model("Course", userSchema);
+module.exports = mongoose.model("Course", courseSchema);

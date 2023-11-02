@@ -5,25 +5,25 @@ const asyncHandler = require("express-async-handler");
 // @route GET /course
 // @access Private
 const getAllCourses = asyncHandler(async (req, res) => {
-  // Get all users from MongoDB
+  // Get all courses from MongoDB
   const courses = await Course.find().select().lean();
 
-  // If no users
+  // If no courses
   if (!courses?.length) {
-    return res.status(400).json({ message: "No users found" });
+    return res.status(400).json({ message: "No courses found" });
   }
 
   res.json(courses);
 });
 
-// @desc Create new user
-// @route POST /users
+// @desc Create new course
+// @route POST /courses
 // @access Private
 const createNewCourse = asyncHandler(async (req, res) => {
   const {
     courseProg,
     currYear,
-    courseNumber,
+    courseCode,
     DescTitle,
     Units,
     courseYear,
@@ -34,7 +34,7 @@ const createNewCourse = asyncHandler(async (req, res) => {
   if (
     !courseProg ||
     !currYear ||
-    !courseNumber ||
+    !courseCode ||
     !DescTitle ||
     !Units ||
     !courseYear ||
@@ -43,11 +43,11 @@ const createNewCourse = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  // Check for duplicate username
-  const duplicate = await User.findOne({ courseNumber }).lean().exec();
+  // Check for duplicate course code
+  const duplicate = await Course.findOne({ courseCode }).lean().exec();
 
   if (duplicate) {
-    return res.status(409).json({ message: "Duplicate idNumber" });
+    return res.status(409).json({ message: "Duplicate course code" });
   }
 
   // Hash password
@@ -55,33 +55,33 @@ const createNewCourse = asyncHandler(async (req, res) => {
   const courseObject = {
     courseProg,
     currYear,
-    courseNumber,
+    courseCode,
     DescTitle,
     Units,
     courseYear,
     courseSem,
   };
 
-  // Create and store new user
+  // Create and store new course
   const course = await Course.create(courseObject);
 
   if (course) {
     //created
-    res.status(201).json({ message: `New user ${courseNumber} created` });
+    res.status(201).json({ message: `New course ${courseCode} created` });
   } else {
-    res.status(400).json({ message: "Invalid user data received" });
+    res.status(400).json({ message: "Invalid course data received" });
   }
 });
 
-// @desc Update a user
-// @route PATCH /users
+// @desc Update a course
+// @route PATCH /courses
 // @access Private
 const updateCourse = asyncHandler(async (req, res) => {
   const {
     id,
     courseProg,
     currYear,
-    courseNumber,
+    courseCode,
     DescTitle,
     Units,
     courseYear,
@@ -92,34 +92,32 @@ const updateCourse = asyncHandler(async (req, res) => {
   if (
     !courseProg ||
     !currYear ||
-    !courseNumber ||
+    !courseCode ||
     !DescTitle ||
     !Units ||
     !courseYear ||
     !courseSem
   ) {
-    return res
-      .status(400)
-      .json({ message: "All fields except password are required" });
+    return res.status(400).json({ message: "All fields required" });
   }
 
-  // Does the user exist to update?
-  const course = await User.findById(id).exec();
+  // Does the course exist to update?
+  const course = await Course.findById(id).exec();
 
   if (!course) {
-    return res.status(400).json({ message: "User not found" });
+    return res.status(400).json({ message: "Course not found" });
   }
 
   // Check for duplicate
-  const duplicate = await User.findOne({ courseNumber }).lean().exec();
+  const duplicate = await Course.findOne({ courseCode }).lean().exec();
 
-  // Allow updates to the original user
-  if (duplicate && duplicate?._id.toString() !== id) {
-    return res.status(409).json({ message: "Duplicate courseNumber" });
+  // Allow updates to the original course
+  if (duplicate && duplicate?._id.toString() !== id.toString()) {
+    return res.status(409).json({ message: "Duplicate courseCode" });
   }
   course.courseProg = courseProg;
   course.currYear = currYear;
-  course.courseNumber = courseNumber;
+  course.courseCode = courseCode;
   course.DescTitle = DescTitle;
   course.Units = Units;
   course.courseYear = courseYear;
@@ -127,36 +125,36 @@ const updateCourse = asyncHandler(async (req, res) => {
 
   const updatedCourse = await course.save();
 
-  res.json({ message: `${updatedCourse.idNumber} updated` });
+  res.json({ message: `${updatedCourse.courseCode} updated` });
 });
 
-// @desc Delete a user
-// @route DELETE /users
+// @desc Delete a course
+// @route DELETE /courses
 // @access Private
 const deleteCourse = asyncHandler(async (req, res) => {
   const { id } = req.body;
 
   // Confirm data
   if (!id) {
-    return res.status(400).json({ message: "User ID Required" });
+    return res.status(400).json({ message: "course ID Required" });
   }
 
-  // Does the user exist to delete?
+  // Does the course exist to delete?
   const course = await Course.findById(id).exec();
 
   if (!course) {
-    return res.status(400).json({ message: "User not found" });
+    return res.status(400).json({ message: "Course not found" });
   }
 
   const result = await course.deleteOne();
 
-  const reply = `Username ${result.idNumber} with ID ${result._id} deleted`;
+  const reply = `Course ${result.DescTitle} with course code ${result.courseCode} deleted`;
 
   res.json(reply);
 });
 
 module.exports = {
-  getAllCourse,
+  getAllCourses,
   createNewCourse,
   updateCourse,
   deleteCourse,
