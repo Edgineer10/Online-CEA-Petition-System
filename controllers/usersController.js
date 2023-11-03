@@ -21,10 +21,10 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createNewUser = asyncHandler(async (req, res) => {
-    const { idNumber, password, firstName, lastName, middleName, birthday, year } = req.body
+    const { idNumber, password, firstName, lastName, middleName, birthday, year, courseProg } = req.body
 
     // Confirm data
-    if (!idNumber || !password || !firstName || !lastName || !middleName || !birthday || !year) {
+    if (!idNumber || !password || !firstName || !lastName || !middleName || !birthday || !year || !courseProg) {
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -38,7 +38,7 @@ const createNewUser = asyncHandler(async (req, res) => {
     // Hash password 
     const hashedPwd = await bcrypt.hash(password, 10) // salt rounds
 
-    const userObject = { idNumber, "password": hashedPwd, firstName, lastName, middleName, birthday, year }
+    const userObject = { idNumber, "password": hashedPwd, firstName, lastName, middleName, birthday, year, courseProg }
 
     // Create and store new user 
     const user = await User.create(userObject)
@@ -54,10 +54,10 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    const { id, idNumber, password, firstName, lastName, middleName, birthday, year, active } = req.body
+    const { id, idNumber, password, firstName, lastName, middleName, birthday, year, active, courseProg } = req.body
 
     // Confirm data 
-    if (!idNumber || !firstName || !lastName || !middleName || !birthday || !year || typeof active !== 'boolean') {
+    if (!idNumber || !firstName || !lastName || !middleName || !birthday || !year || !courseProg || typeof active !== 'boolean') {
         return res.status(400).json({ message: 'All fields except password are required' })
     }
 
@@ -82,6 +82,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.middleName = middleName
     user.birthday = birthday
     user.year = year
+    user.courseProg = courseProg
     user.active = active
 
     if (password) {

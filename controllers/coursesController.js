@@ -24,8 +24,8 @@ const createNewCourse = asyncHandler(async (req, res) => {
     courseProg,
     currYear,
     courseCode,
-    DescTitle,
-    Units,
+    descTitle,
+    unit,
     courseYear,
     courseSem,
   } = req.body;
@@ -35,8 +35,8 @@ const createNewCourse = asyncHandler(async (req, res) => {
     !courseProg ||
     !currYear ||
     !courseCode ||
-    !DescTitle ||
-    !Units ||
+    !descTitle ||
+    !unit ||
     !courseYear ||
     !courseSem
   ) {
@@ -56,8 +56,8 @@ const createNewCourse = asyncHandler(async (req, res) => {
     courseProg,
     currYear,
     courseCode,
-    DescTitle,
-    Units,
+    descTitle,
+    unit,
     courseYear,
     courseSem,
   };
@@ -82,8 +82,8 @@ const updateCourse = asyncHandler(async (req, res) => {
     courseProg,
     currYear,
     courseCode,
-    DescTitle,
-    Units,
+    descTitle,
+    unit,
     courseYear,
     courseSem,
   } = req.body;
@@ -93,8 +93,8 @@ const updateCourse = asyncHandler(async (req, res) => {
     !courseProg ||
     !currYear ||
     !courseCode ||
-    !DescTitle ||
-    !Units ||
+    !descTitle ||
+    !unit ||
     !courseYear ||
     !courseSem
   ) {
@@ -118,8 +118,8 @@ const updateCourse = asyncHandler(async (req, res) => {
   course.courseProg = courseProg;
   course.currYear = currYear;
   course.courseCode = courseCode;
-  course.DescTitle = DescTitle;
-  course.Units = Units;
+  course.descTitle = descTitle;
+  course.unit = unit;
   course.courseYear = courseYear;
   course.courseSem = courseSem;
 
@@ -148,7 +148,7 @@ const deleteCourse = asyncHandler(async (req, res) => {
 
   const result = await course.deleteOne();
 
-  const reply = `Course ${result.DescTitle} with course code ${result.courseCode} deleted`;
+  const reply = `Course ${result.descTitle} with course code ${result.courseCode} deleted`;
 
   res.json(reply);
 });

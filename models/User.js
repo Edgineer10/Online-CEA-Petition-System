@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  courseProg: {
+    type: String,
+    required: true,
+  },
   active: {
     type: Boolean,
     default: true,

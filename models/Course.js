@@ -20,11 +20,11 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  DescTitle: {
+  descTitle: {
     type: String,
     required: true,
   },
-  Units: {
+  unit: {
     type: Number,
     required: true,
   },
