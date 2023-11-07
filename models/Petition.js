@@ -12,7 +12,7 @@ const petitionSchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    Schedule: {
+    schedule: {
       type: String,
       required: true,
     },

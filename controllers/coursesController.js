@@ -32,7 +32,7 @@ const createNewCourse = asyncHandler(async (req, res) => {
 
   // Confirm data
   if (
-    !courseProg ||
+    !courseProg.length ||
     !currYear ||
     !courseCode ||
     !descTitle ||
@@ -90,7 +90,7 @@ const updateCourse = asyncHandler(async (req, res) => {
 
   // Confirm data
   if (
-    !courseProg ||
+    !courseProg.length ||
     !currYear ||
     !courseCode ||
     !descTitle ||

@@ -124,7 +124,6 @@ const updateUser = asyncHandler(async (req, res) => {
   if (duplicate && duplicate?._id.toString() !== id) {
     return res.status(409).json({ message: "Duplicate idNumber" });
   }
-  user.password = password;
   user.firstName = firstName;
   user.lastName = lastName;
   user.middleName = middleName;
