@@ -58,7 +58,7 @@ const createNewPetition = asyncHandler(async (req, res) => {
 // @route PATCH /petitions
 // @access Private
 const updatePetition = asyncHandler(async (req, res) => {
-  const { course, petitionee, schedule } = req.body;
+  const { id, course, petitionee, schedule } = req.body;
 
   // Confirm data
   if (!course || !petitionee.length || !schedule || !Array.isArray(petitionee)) {
@@ -79,9 +79,8 @@ const updatePetition = asyncHandler(async (req, res) => {
   petition.schedule = schedule;
 
   const updatedpetition = await petition.save();
-  const courseDet = Course.findById(course).lean().exec();
 
-  res.json({ message: `${courseDet.courseCode} updated` });
+  res.json({ message: ` updated` });
 });
 
 // @desc Delete a petition
