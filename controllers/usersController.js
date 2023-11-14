@@ -24,6 +24,7 @@ const createNewUser = asyncHandler(async (req, res) => {
   const {
     idNumber,
     password,
+    role,
     firstName,
     lastName,
     middleName,
@@ -36,6 +37,7 @@ const createNewUser = asyncHandler(async (req, res) => {
   if (
     !idNumber ||
     !password ||
+    !role ||
     !firstName ||
     !lastName ||
     !middleName ||
@@ -59,6 +61,7 @@ const createNewUser = asyncHandler(async (req, res) => {
   const userObject = {
     idNumber,
     password: hashedPwd,
+    role,
     firstName,
     lastName,
     middleName,
@@ -85,6 +88,7 @@ const updateUser = asyncHandler(async (req, res) => {
   const {
     id,
     idNumber,
+    role,
     password,
     firstName,
     lastName,
@@ -99,6 +103,7 @@ const updateUser = asyncHandler(async (req, res) => {
   if (
     !firstName ||
     !lastName ||
+    !role ||
     !middleName ||
     !birthday ||
     !year ||
@@ -131,6 +136,7 @@ const updateUser = asyncHandler(async (req, res) => {
   user.year = year;
   user.courseProg = courseProg;
   user.active = active;
+  user.role = role;
 
   if (password) {
     // Hash password
