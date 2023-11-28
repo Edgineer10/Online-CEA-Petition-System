@@ -1,10 +1,9 @@
 const Course = require("../models/Course");
-const asyncHandler = require("express-async-handler");
 
 // @desc Get all course
 // @route GET /course
 // @access Private
-const getAllCourses = asyncHandler(async (req, res) => {
+const getAllCourses = async (req, res) => {
   // Get all courses from MongoDB
   const courses = await Course.find().select().lean();
 
@@ -14,12 +13,12 @@ const getAllCourses = asyncHandler(async (req, res) => {
   }
 
   res.json(courses);
-});
+};
 
 // @desc Create new course
 // @route POST /courses
 // @access Private
-const createNewCourse = asyncHandler(async (req, res) => {
+const createNewCourse = async (req, res) => {
   const {
     courseProg,
     currYear,
@@ -44,7 +43,7 @@ const createNewCourse = asyncHandler(async (req, res) => {
   }
 
   // Check for duplicate course code
-  const duplicate = await Course.findOne({ courseCode }).lean().exec();
+  const duplicate = await Course.findOne({ courseCode }).collation({ locale: 'en', strength: 2 }).lean().exec()
 
   if (duplicate) {
     return res.status(409).json({ message: "Duplicate course code" });
@@ -71,12 +70,12 @@ const createNewCourse = asyncHandler(async (req, res) => {
   } else {
     res.status(400).json({ message: "Invalid course data received" });
   }
-});
+};
 
 // @desc Update a course
 // @route PATCH /courses
 // @access Private
-const updateCourse = asyncHandler(async (req, res) => {
+const updateCourse = async (req, res) => {
   const {
     id,
     courseProg,
@@ -126,12 +125,12 @@ const updateCourse = asyncHandler(async (req, res) => {
   const updatedCourse = await course.save();
 
   res.json({ message: `${updatedCourse.courseCode} updated` });
-});
+};
 
 // @desc Delete a course
 // @route DELETE /courses
 // @access Private
-const deleteCourse = asyncHandler(async (req, res) => {
+const deleteCourse = async (req, res) => {
   const { id } = req.body;
 
   // Confirm data
@@ -151,7 +150,7 @@ const deleteCourse = asyncHandler(async (req, res) => {
   const reply = `Course ${result.descTitle} with course code ${result.courseCode} deleted`;
 
   res.json(reply);
-});
+};
 
 module.exports = {
   getAllCourses,

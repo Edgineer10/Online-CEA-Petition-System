@@ -1,11 +1,10 @@
 const Petition = require("../models/Petition")
 const Course = require("../models/Course")
-const asyncHandler = require("express-async-handler")
 
 // @desc Get all petitions
 // @route GET /petitions
 // @access Private
-const getAllPetitions = asyncHandler(async (req, res) => {
+const getAllPetitions = async (req, res) => {
   // Get all petitions from MongoDB
   const petitions = await Petition.find().select().lean();
 
@@ -21,12 +20,12 @@ const getAllPetitions = asyncHandler(async (req, res) => {
     }))
 
   res.json(petitionWithDetails);
-});
+};
 
 // @desc Create new petition
 // @route POST /petitions
 // @access Private
-const createNewPetition = asyncHandler(async (req, res) => {
+const createNewPetition = async (req, res) => {
   const { course, petitionee, schedule } = req.body;
 
   // Confirm data
@@ -52,12 +51,12 @@ const createNewPetition = asyncHandler(async (req, res) => {
   } else {
     res.status(400).json({ message: "Invalid petition data received" });
   }
-});
+};
 
 // @desc Update a petition
 // @route PATCH /petitions
 // @access Private
-const updatePetition = asyncHandler(async (req, res) => {
+const updatePetition = async (req, res) => {
   const { id, course, petitionee, schedule } = req.body;
 
   // Confirm data
@@ -81,12 +80,12 @@ const updatePetition = asyncHandler(async (req, res) => {
   const updatedpetition = await petition.save();
 
   res.json({ message: ` updated` });
-});
+};
 
 // @desc Delete a petition
 // @route DELETE /petitions
 // @access Private
-const deletePetition = asyncHandler(async (req, res) => {
+const deletePetition = async (req, res) => {
   const { id } = req.body;
 
   // Confirm data
@@ -106,7 +105,7 @@ const deletePetition = asyncHandler(async (req, res) => {
   const reply = `petition of a subject ${result.course.courseCode}  deleted`;
 
   res.json(reply);
-});
+};
 
 module.exports = {
   getAllPetitions,
