@@ -57,13 +57,13 @@ const createNewPetition = async (req, res) => {
 // @route PATCH /petitions
 // @access Private
 const updatePetition = async (req, res) => {
-  const { id, course, petitionee, schedule } = req.body;
+  const { id, course, petitionee, schedule, status } = req.body;
 
   // Confirm data
-  if (!course || !petitionee.length || !schedule || !Array.isArray(petitionee)) {
+  if (!course || !petitionee.length || !schedule || !Array.isArray(petitionee) || !status) {
     return res
       .status(400)
-      .json({ message: "All fields except password are required" });
+      .json({ message: "All fields are required" });
   }
 
   // Does the petition exist to update?
@@ -76,6 +76,7 @@ const updatePetition = async (req, res) => {
   petition.course = course;
   petition.petitionee = petitionee;
   petition.schedule = schedule;
+  petition.status = status
 
   const updatedpetition = await petition.save();
 
