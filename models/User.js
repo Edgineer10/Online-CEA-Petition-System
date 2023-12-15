@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   currYear: {
-    type: String,
+    type: Number,
     required: true,
   },
   active: {
