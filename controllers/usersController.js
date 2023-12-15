@@ -27,9 +27,11 @@ const createNewUser = async (req, res) => {
     firstName,
     lastName,
     middleName,
+    gender,
     birthday,
     year,
     courseProg,
+    currYear,
   } = req.body;
 
   // Confirm data
@@ -41,14 +43,19 @@ const createNewUser = async (req, res) => {
     !lastName ||
     !middleName ||
     !birthday ||
+    !gender ||
     !year ||
-    !courseProg
+    !courseProg ||
+    !currYear
   ) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   // Check for duplicate username
-  const duplicate = await User.findOne({ idNumber: idNumber }).collation({ locale: 'en', strength: 2 }).lean().exec()
+  const duplicate = await User.findOne({ idNumber: idNumber })
+    .collation({ locale: "en", strength: 2 })
+    .lean()
+    .exec();
 
   if (duplicate) {
     return res.status(409).json({ message: "Duplicate idNumber" });
@@ -59,14 +66,16 @@ const createNewUser = async (req, res) => {
 
   const userObject = {
     idNumber,
-    password: hashedPwd,
+    password,
     role,
     firstName,
     lastName,
     middleName,
+    gender,
     birthday,
     year,
     courseProg,
+    currYear,
   };
 
   // Create and store new user
@@ -87,17 +96,19 @@ const updateUser = async (req, res) => {
   const {
     id,
     idNumber,
-    role,
     password,
+    role,
     firstName,
     lastName,
     middleName,
+    gender,
     birthday,
     year,
-    active,
     courseProg,
+    currYear,
+    active,
   } = req.body;
-
+  console.log(firstName);
   // Confirm data
   if (
     !firstName ||
@@ -105,8 +116,10 @@ const updateUser = async (req, res) => {
     !role ||
     !middleName ||
     !birthday ||
+    !gender ||
     !year ||
     !courseProg ||
+    !currYear ||
     typeof active !== "boolean"
   ) {
     return res
@@ -132,8 +145,10 @@ const updateUser = async (req, res) => {
   user.lastName = lastName;
   user.middleName = middleName;
   user.birthday = birthday;
+  user.gender = gender;
   user.year = year;
   user.courseProg = courseProg;
+  user.currYear = currYear;
   user.active = active;
   user.role = role;
 

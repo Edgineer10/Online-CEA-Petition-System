@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  gender: {
+    type: String,
+    required: true,
+  },
   birthday: {
     type: Date,
     required: true,
@@ -34,6 +38,10 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   courseProg: {
+    type: String,
+    required: true,
+  },
+  currYear: {
     type: String,
     required: true,
   },
