@@ -20,6 +20,10 @@ const petitionSchema = new mongoose.Schema(
       type: String,
       default: "On-going",
     },
+    remark: {
+      type: String,
+      default: "Petition just started",
+    },
   },
   {
     timestamps: true,

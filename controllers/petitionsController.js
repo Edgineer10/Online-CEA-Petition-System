@@ -16,7 +16,7 @@ const getAllPetitions = async (req, res) => {
   const petitionWithDetails = await Promise.all(
     petitions.map(async (petition) => {
       const course = await Course.findById(petition.course).lean().exec()
-      return { ...petition, courseProg: course.courseProg, courseCode: course.courseCode, descTitle: course.descTitle, unit: course.unit }
+      return { ...petition, courseProg: course.courseProg, courseCode: course.courseCode, descTitle: course.descTitle, unit: course.unit, currYear: course.currYear }
     }))
 
   res.json(petitionWithDetails);
@@ -57,10 +57,10 @@ const createNewPetition = async (req, res) => {
 // @route PATCH /petitions
 // @access Private
 const updatePetition = async (req, res) => {
-  const { id, course, petitionee, schedule, status } = req.body;
+  const { id, course, petitionee, schedule, status, remark } = req.body;
 
   // Confirm data
-  if (!course || !petitionee.length || !schedule || !Array.isArray(petitionee) || !status) {
+  if (!course || !petitionee.length || !schedule || !Array.isArray(petitionee) || !status || !remark) {
     return res
       .status(400)
       .json({ message: "All fields are required" });
@@ -77,6 +77,8 @@ const updatePetition = async (req, res) => {
   petition.petitionee = petitionee;
   petition.schedule = schedule;
   petition.status = status
+  petition.remark = remark
+
 
   const updatedpetition = await petition.save();
 
