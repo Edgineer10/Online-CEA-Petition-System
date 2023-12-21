@@ -66,7 +66,7 @@ const createNewUser = async (req, res) => {
 
   const userObject = {
     idNumber,
-    password,
+    password: hashedPwd,
     role,
     firstName,
     lastName,
