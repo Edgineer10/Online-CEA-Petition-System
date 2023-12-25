@@ -16,7 +16,8 @@ const getAllPetitions = async (req, res) => {
   const petitionWithDetails = await Promise.all(
     petitions.map(async (petition) => {
       const course = await Course.findById(petition.course).lean().exec()
-      return { ...petition, courseProg: course.courseProg, courseCode: course.courseCode, descTitle: course.descTitle, unit: course.unit, currYear: course.currYear }
+      if (course) return { ...petition, courseProg: course.courseProg, courseCode: course.courseCode, descTitle: course.descTitle, unit: course.unit, currYear: course.currYear }
+      else return { ...petition, courseProg: [""], courseCode: "Course Not Found", descTitle: "Course Not Found", unit: "Course Not Found", currYear: "Course Not Found" }
     }))
 
   res.json(petitionWithDetails);
