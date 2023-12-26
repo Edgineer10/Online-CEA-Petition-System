@@ -18,7 +18,7 @@ const login = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const match = await bcrypt.compare(password, foundUser.password);
+  const match = foundUser.password ? await bcrypt.compare(password, foundUser.password) : foundUser.idNumber + foundUser.lastName === password;
 
   if (!match) return res.status(401).json({ message: "Unauthorized" });
 
@@ -36,6 +36,7 @@ const login = async (req, res) => {
           foundUser.middleName,
         role: foundUser.role,
         currYear: foundUser.currYear,
+        isPWSet: foundUser.password ? true : false
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
@@ -96,6 +97,7 @@ const refresh = (req, res) => {
               foundUser.middleName,
             role: foundUser.role,
             currYear: foundUser.currYear,
+            isPWSet: foundUser.password ? true : false
           },
         },
         process.env.ACCESS_TOKEN_SECRET,

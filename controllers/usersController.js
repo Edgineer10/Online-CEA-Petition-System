@@ -108,7 +108,6 @@ const updateUser = async (req, res) => {
     currYear,
     active,
   } = req.body;
-  console.log(firstName);
   // Confirm data
   if (
     !firstName ||
